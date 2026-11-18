@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#050b14" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <meta name="description" content="SKYFALL – Air Dominance. A browser-based fighter jet combat game." />
+  <title>SKYFALL – Air Dominance</title>
+  <script type="module" crossorigin src="./assets/index-DHAfJBZU.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-mSYBUABe.css">
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas" width="1280" height="720"></canvas>
+
+    <!-- LOADING -->
+    <section id="screen-loading" class="screen active">
+      <div class="loading-wrap">
+        <div class="loading-emblem">✦</div>
+        <h1 class="loading-title">SKYFALL</h1>
+        <p class="loading-sub">A I R &nbsp; D O M I N A N C E</p>
+        <div class="loading-bar"><div id="loading-fill"></div></div>
+        <p id="loading-status" class="loading-status">Initializing flight systems…</p>
+      </div>
+    </section>
+
+    <!-- MAIN MENU -->
+    <section id="screen-menu" class="screen">
+      <div class="menu-vignette"></div>
+      <div class="menu-content">
+        <div class="brand">
+          <div class="brand-wing">▲</div>
+          <h1 class="game-logo">SKYFALL</h1>
+          <div class="game-subtitle">A I R &nbsp; D O M I N A N C E</div>
+          <div class="brand-line"></div>
+          <p class="brand-tag">Defend the frontier. Own the skies.</p>
+        </div>
+        <nav class="menu-nav">
+          <button id="btn-start" class="btn btn-primary">Start Campaign</button>
+          <button id="btn-continue" class="btn">Continue Campaign</button>
+          <button id="btn-missions" class="btn">Mission Select</button>
+          <button id="btn-settings" class="btn">Settings</button>
+          <button id="btn-credits" class="btn btn-ghost">Credits</button>
+        </nav>
+        <div class="menu-footer">
+          <span>WASD / ARROWS · SPACE FIRE · X MISSILE · SHIFT SHIELD · C SPECIAL</span>
+          <span id="menu-best">BEST SCORE 0000000</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION SELECT -->
+    <section id="screen-missions" class="screen">
+      <div class="panel wide">
+        <header class="panel-head">
+          <div><h2>MISSION SELECT</h2><p>Select an operation to deploy</p></div>
+          <button id="btn-missions-back" class="btn btn-small">← Back</button>
+        </header>
+        <div id="missions-grid" class="missions-grid"></div>
+        <div class="panel-foot"><span id="missions-progress">0 / 7 MISSIONS COMPLETE</span></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="screen-settings" class="screen">
+      <div class="panel">
+        <header class="panel-head">
+          <div><h2>SETTINGS</h2><p>Audio and control configuration</p></div>
+          <button id="btn-settings-back" class="btn btn-small">← Back</button>
+        </header>
+        <div class="settings-body">
+          <label class="setting-row">
+            <span>Master Volume</span>
+            <input id="set-master" type="range" min="0" max="100" value="70" />
+            <output id="out-master">70</output>
+          </label>
+          <label class="setting-row">
+            <span>Music Volume</span>
+            <input id="set-music" type="range" min="0" max="100" value="50" />
+            <output id="out-music">50</output>
+          </label>
+          <label class="setting-row">
+            <span>Effects Volume</span>
+            <input id="set-sfx" type="range" min="0" max="100" value="80" />
+            <output id="out-sfx">80</output>
+          </label>
+          <label class="setting-row toggle-row">
+            <span>Mute All Audio</span>
+            <input id="set-mute" type="checkbox" />
+          </label>
+          <label class="setting-row toggle-row">
+            <span>Mouse / Touch Steering Mode</span>
+            <input id="set-mouse" type="checkbox" />
+          </label>
+          <div class="settings-note">Controls: WASD / Arrows to steer · SPACE fire · X missile · SHIFT shield · C special · ESC pause.<br />In mouse mode the aircraft follows your cursor / finger.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDITS -->
+    <section id="screen-credits" class="screen">
+      <div class="panel">
+        <header class="panel-head">
+          <div><h2>CREDITS</h2><p>SKYFALL – Air Dominance</p></div>
+          <button id="btn-credits-back" class="btn btn-small">← Back</button>
+        </header>
+        <div class="credits-body">
+          <p class="credits-lead">A fictional combat flight experience.</p>
+          <p>All nations, organizations, aircraft and bases depicted in this game are entirely fictional. No real-world military assets or trademarks are used.</p>
+          <p>Graphics: procedurally rendered with HTML5 Canvas.<br />Audio: synthesized in real time with the Web Audio API.</p>
+          <p class="credits-tech">Engine: Vanilla JavaScript + Vite · No external services · Progress saved locally.</p>
+          <p class="credits-thanks">Thank you for flying with SKYFALL.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRIEFING -->
+    <section id="screen-briefing" class="screen">
+      <div class="panel wide briefing-panel">
+        <div class="brief-stamp" id="brief-stamp">OP 01</div>
+        <header class="panel-head">
+          <div><h2 id="brief-title">MISSION BRIEFING</h2><p id="brief-num">Operation 01 of 07</p></div>
+          <button id="btn-brief-back" class="btn btn-small">← Abort</button>
+        </header>
+        <div class="brief-body">
+          <p id="brief-desc" class="brief-desc"></p>
+          <div class="brief-cols">
+            <div>
+              <h3>OBJECTIVES</h3>
+              <ul id="brief-objectives"></ul>
+            </div>
+            <div>
+              <h3>INTEL / TIPS</h3>
+              <ul id="brief-tips"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="panel-foot"><button id="btn-brief-start" class="btn btn-primary">Launch Mission →</button></div>
+      </div>
+    </section>
+
+    <!-- PAUSE -->
+    <section id="screen-pause" class="screen">
+      <div class="panel narrow">
+        <header class="panel-head"><div><h2>PAUSED</h2><p>Systems on standby</p></div></header>
+        <nav class="panel-nav">
+          <button id="btn-resume" class="btn btn-primary">Resume</button>
+          <button id="btn-restart" class="btn">Restart Mission</button>
+          <button id="btn-pause-settings" class="btn">Settings</button>
+          <button id="btn-pause-menu" class="btn btn-ghost">Main Menu</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="screen-gameover" class="screen">
+      <div class="panel narrow result-panel fail">
+        <div class="result-kicker">MISSION FAILED</div>
+        <h2>AIRCRAFT LOST</h2>
+        <p class="result-sub" id="go-mission">Operation 01</p>
+        <div class="result-stats">
+          <div><span>SCORE</span><strong id="go-score">0</strong></div>
+          <div><span>ENEMIES DESTROYED</span><strong id="go-kills">0</strong></div>
+        </div>
+        <nav class="panel-nav">
+          <button id="btn-retry" class="btn btn-primary">Retry Mission</button>
+          <button id="btn-go-menu" class="btn btn-ghost">Main Menu</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- LEVEL COMPLETE -->
+    <section id="screen-levelcomplete" class="screen">
+      <div class="panel narrow result-panel success">
+        <div class="result-kicker">MISSION ACCOMPLISHED</div>
+        <h2 id="lc-title">OBJECTIVES COMPLETE</h2>
+        <p class="result-sub" id="lc-mission">Operation 01</p>
+        <div class="result-stats">
+          <div><span>SCORE</span><strong id="lc-score">0</strong></div>
+          <div><span>ENEMIES DESTROYED</span><strong id="lc-kills">0</strong></div>
+          <div><span>TIME BONUS</span><strong id="lc-bonus">0</strong></div>
+        </div>
+        <div id="lc-unlock" class="unlock-note"></div>
+        <nav class="panel-nav">
+          <button id="btn-next" class="btn btn-primary">Next Mission →</button>
+          <button id="btn-lc-menu" class="btn btn-ghost">Main Menu</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- VICTORY -->
+    <section id="screen-victory" class="screen">
+      <div class="panel victory-panel">
+        <div class="victory-glow"></div>
+        <div class="result-kicker">CAMPAIGN COMPLETE</div>
+        <h2 class="victory-title">SKIES SECURED</h2>
+        <p class="victory-text">The commander's forces have been shattered. Friendly airspace is secure and the frontier is safe. You are the ace of SKYFALL.</p>
+        <div class="result-stats three">
+          <div><span>CAMPAIGN SCORE</span><strong id="vic-score">0</strong></div>
+          <div><span>TOTAL KILLS</span><strong id="vic-kills">0</strong></div>
+          <div><span>MISSIONS</span><strong>7 / 7</strong></div>
+        </div>
+        <nav class="panel-nav horizontal">
+          <button id="btn-playagain" class="btn btn-primary">Play Again</button>
+          <button id="btn-vic-menu" class="btn btn-ghost">Main Menu</button>
+        </nav>
+      </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- TOUCH CONTROLS -->
+    <div id="touch-controls" class="touch-controls">
+      <div id="joy-base" class="joy-base"><div id="joy-knob" class="joy-knob"></div></div>
+      <div class="touch-buttons">
+        <button id="touch-shield" class="tbtn shield">SHIELD</button>
+        <button id="touch-special" class="tbtn special">SPECIAL</button>
+        <button id="touch-missile" class="tbtn missile">MISSILE</button>
+        <button id="touch-fire" class="tbtn fire">FIRE</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
